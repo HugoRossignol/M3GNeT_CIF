@@ -1,0 +1,76 @@
+
+#(C) 2021 by FIZ Karlsruhe - Leibniz Institute for Information Infrastructure.  All rights reserved.
+data_80164-ICSD
+_database_code_ICSD 80164
+_audit_creation_date 1996-10-14
+_audit_update_record 2007-08-01
+_chemical_name_common 'Uranium molybdenum oxide (1/5/16) - HT'
+_chemical_formula_structural 'U Mo5 O16'
+_chemical_formula_sum 'Mo5 O16 U1'
+_exptl_crystal_density_diffrn 5.52
+_citation_title
+
+;
+The crystal structures of U Mo5 O16 and U0.75 Mo5 O16. Studies by X-ray
+diffraction and high-resolution electron microscopy
+;
+loop_
+_citation_id
+_citation_journal_full
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'European Journal of Solid State and Inorganic Chemistry' 1995 32 1137
+1149 EJSCE5
+loop_
+_citation_author_citation_id
+_citation_author_name
+primary 'Tabachenko, V.V.'
+primary 'D'yachenko, O.G. (Dyachenko, O.G.)'
+primary 'Sundberg, M.R.'
+_cell_length_a 9.8850(7)
+_cell_length_b 7.1672(7)
+_cell_length_c 4.1332(3)
+_cell_angle_alpha 90.
+_cell_angle_beta 90.
+_cell_angle_gamma 90.
+_cell_volume 292.83
+_cell_formula_units_Z 1
+_space_group_name_H-M_alt 'P 2 2 2'
+_space_group_IT_number 16
+loop_
+_space_group_symop_id
+_space_group_symop_operation_xyz
+1 '-x, y, -z'
+2 'x, -y, -z'
+3 '-x, -y, z'
+4 'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+U4+ 4
+Mo5+ 5.6
+O2- -2
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+U1 U4+ 1 a 0 0 0 0.58(2) 1.
+Mo1 Mo5+ 2 s 0 0.5 0.910(1) 0.65(5) 0.5
+Mo2 Mo5+ 4 u 0.3200(2) 0.2488(5) 0.9050(6) 0.41(4) 1.
+O1 O2- 1 d 0 0 0.5 1.5(8) 1.
+O2 O2- 1 g 0 0.5 0.5 3.(2) 1.
+O3 O2- 4 u 0.125(2) 0.299(2) 0.010(7) 0.8(3) 1.
+O4 O2- 2 i 0.249(3) 0 0 1.4(5) 1.
+O5 O2- 2 k 0.358(4) 0.5 0 2.6(7) 1.
+O6 O2- 4 u 0.317(2) 0.246(3) 0.506(6) 1.1(3) 1.
+O7 O2- 2 o 0.5 0.189(3) 0 0.6(1) 1.
+#End of TTdata_80164-ICSD
