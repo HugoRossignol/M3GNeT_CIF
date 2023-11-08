@@ -1,5 +1,10 @@
 import numpy as np
 import re
+import pyxtal
+from pymatgen.core.operations import SymmOp
+from pyxtal.symmetry import Group
+from pyxtal.symmetry import Wyckoff_position as wp
+import pyxtal.operations
 
 class CIFParser:
     def __init__(self, cif_file):
@@ -14,6 +19,7 @@ class CIFParser:
         self.lattice_parameters = []
         self.pos_info = []
         self.index = 0
+        self.sg_full_cif = None
 
         with open(cif_file, 'r') as file:
             lines = file.read().splitlines()
@@ -49,6 +55,12 @@ class CIFParser:
                 self.lattice_parameters.append(float(line.split()[-1].split("(")[0]))
             elif line.startswith("_cell_angle_gamma"):
                 self.lattice_parameters.append(float(line.split()[-1].split("(")[0]))
+            elif line.startswith("_space_group_IT_number"):
+                self.sg_cif = int(line.split()[-1])
+            elif line.startswith("_space_group_name_H-M_alt"):
+                self.sg_full_cif = line.split("'")[1]
+
+        #Apply symmtries to generate other positions.
         self.apply_symmetries()
 
     def parse_symmetry(self, line):
@@ -63,7 +75,7 @@ class CIFParser:
         match = re.search(r'(?:(^\d+\s)|(?<=\s))?[\'"]?(-?[a-zA-Z\d./+*()-]+,\s?-?[a-zA-Z\d./+*()-]+,\s?-?[a-zA-Z\d./+*()-]+)[\'"]?',line)
 
         if match:
-            self.symmetry_operations.append(match.group(2).replace("'","")) 
+            self.symmetry_operations.append(match.group(2).replace("'",""))
         else:
             raise ValueError("Positions in CIF cannot be parsed.")
 
@@ -76,6 +88,8 @@ class CIFParser:
         """
         if line.startswith("_atom_site_label") or line.startswith("_atom_site_fract"):
             self.pos_info.append(self.index)
+        #elif line.startswith("_atom_site_symmetry_multiplicity") or line.startswith("_atom_site_Wyckoff_symbol"):
+            #self.wyckoff_info.append(self.index)
 
     def parse_pos(self, line):
         """
@@ -86,7 +100,8 @@ class CIFParser:
         """
         line_list = line.split()
         symbol, x, y, z = [line_list[i].split("(")[0] for i in self.pos_info]
-        
+        #self.wyckoff_pos.add(str(line_list[self.wyckoff_info[0]])+line_list[self.wyckoff_info[1]])
+
         match = re.match(r'^[A-Za-z]+', symbol)
 
         if match:
@@ -132,6 +147,47 @@ class CIFParser:
         new_y = eval(symm_op.split(',')[1]) % 1
         new_z = eval(symm_op.split(',')[2]) % 1
         return np.array([new_x, new_y, new_z])
+
+
+    def match_space_groups(self):
+
+        """
+        Checks whether the space group in the CIF mathces the symmetry operations provided.
+
+        Returns:
+            boolean: bool giving whether the space groups match or not.
+        """
+
+
+        # Generate the symmetry operations associated with the space group.
+        g = Group(self.sg_cif,dim=3)
+        space_group_wp = g[0]
+
+        # Generate the symmetry operations associated with the cif symmetry operations.
+        cif_ops = []
+        for symm_op in self.symmetry_operations:
+            cif_ops.append(SymmOp.from_xyz_str(symm_op))
+        
+        try:
+            cif_wp = wp.from_symops_wo_group(cif_ops)
+        except:
+            #This means that the symmetry operations are not any as given by the IT.
+            print("Could not load symmetries of the CIF.")
+            return False
+
+        if space_group_wp.has_equivalent_ops(cif_wp):
+            #Symmetries match.
+            return True
+        else:
+            print(self.sg_full_cif)
+            if self.sg_full_cif == cif_wp.get_hm_symbol():
+                #Symmetries didn't match but the full space group symbols did, so the cell choice is different.
+                print("Symmetries did not match because of different choice of cell but the space group symbols match.")
+                return True
+            else:
+                #The symmetries and the space group symbols don't match.
+                return False
+
 
 # Example usage:
 if __name__ == "__main__":
