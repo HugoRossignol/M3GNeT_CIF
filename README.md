@@ -118,9 +118,12 @@ All compounds are successfully relaxed. The relaxation path structures are saved
 Finally, the last notebook uses the edge and node features of the graphs of each structure as feature representations. Note that there are many vectors per structure, and in fact more with increasing system size.
 KMeans clustering with three clusters is performed on these vectors,in order to see if there is any clustering by space group. This is performed for the edge and node features separately. The results are shown below, following PCA:
 
+![Node SG](Node_sg.png)
+
+![Edge SG](Edge_sg.png)
 
 As can be seen, there are not three obvious clusters and there is no space-group dependent cluster. For the node features, it is interesting to look at the PCA again but with atomic symbols as labels:
 
-
+![Node Atom](Node_atomic_symbol.png)
 
 
